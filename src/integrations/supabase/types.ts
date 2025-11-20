@@ -46,6 +46,42 @@ export type Database = {
           },
         ]
       }
+      clients: {
+        Row: {
+          avatar_url: string | null
+          client_type: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          client_type?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          client_type?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       compras: {
         Row: {
           created_at: string | null
@@ -156,6 +192,145 @@ export type Database = {
           nome_completo?: string | null
         }
         Relationships: []
+      }
+      properties: {
+        Row: {
+          address: string
+          building_age: number | null
+          city: string
+          created_at: string
+          daily_visitors: number | null
+          district: string | null
+          id: string
+          image_url: string | null
+          latitude: number | null
+          longitude: number | null
+          price: number
+          property_type: string
+          state: string
+          status: string | null
+          temperature: number | null
+          title: string
+          units: string[] | null
+          updated_at: string
+          zip_code: string | null
+        }
+        Insert: {
+          address: string
+          building_age?: number | null
+          city: string
+          created_at?: string
+          daily_visitors?: number | null
+          district?: string | null
+          id?: string
+          image_url?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          price: number
+          property_type: string
+          state: string
+          status?: string | null
+          temperature?: number | null
+          title: string
+          units?: string[] | null
+          updated_at?: string
+          zip_code?: string | null
+        }
+        Update: {
+          address?: string
+          building_age?: number | null
+          city?: string
+          created_at?: string
+          daily_visitors?: number | null
+          district?: string | null
+          id?: string
+          image_url?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          price?: number
+          property_type?: string
+          state?: string
+          status?: string | null
+          temperature?: number | null
+          title?: string
+          units?: string[] | null
+          updated_at?: string
+          zip_code?: string | null
+        }
+        Relationships: []
+      }
+      property_favorites: {
+        Row: {
+          created_at: string
+          id: string
+          property_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          property_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          property_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_favorites_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tenants: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          lease_end_date: string | null
+          move_in_date: string | null
+          phone: string | null
+          property_id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name: string
+          id?: string
+          lease_end_date?: string | null
+          move_in_date?: string | null
+          phone?: string | null
+          property_id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          lease_end_date?: string | null
+          move_in_date?: string | null
+          phone?: string | null
+          property_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenants_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
