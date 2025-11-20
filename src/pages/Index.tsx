@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import Sidebar from "@/components/Sidebar";
 import PropertyMap from "@/components/PropertyMap";
 import PropertyCard from "@/components/PropertyCard";
@@ -13,11 +15,20 @@ import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
 
 const Index = () => {
+  const navigate = useNavigate();
+  const { user, loading } = useAuth();
   const [selectedProperty, setSelectedProperty] = useState<Tables<"properties"> | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [stateFilter, setStateFilter] = useState("all");
   const [cityFilter, setCityFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
+
+  // Redirect to auth if not logged in
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
 
   const { data: properties = [], isLoading } = useQuery({
     queryKey: ["properties"],
@@ -50,6 +61,23 @@ const Index = () => {
       setSelectedProperty(filteredProperties[0]);
     }
   }, [filteredProperties, selectedProperty]);
+
+  // Show loading while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">A carregar...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render anything if not authenticated (redirect will happen)
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-background">
